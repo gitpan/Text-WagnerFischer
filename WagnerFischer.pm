@@ -4,7 +4,7 @@ use strict;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 
-$VERSION     = '0.01';
+$VERSION     = '0.02';
 @ISA         = qw(Exporter);
 @EXPORT      = ();
 @EXPORT_OK   = qw(&distance);
@@ -54,7 +54,7 @@ sub distance {
 
 				#array cost missing: using default [0,1,1]
 
-				@t[0]=$s;
+				$t[0]=$s;
 				$s=$refc;
 				$refc=[0,1,1];
 
@@ -90,12 +90,29 @@ sub distance {
 		my @d;
 
 		my $m=length($t);
-		if(!$n) {push @result,$m;last}
-		if(!$m) {push @result,$n;last}
+		if(!$n) {push @result,$m*$refc->[1];next}
+		if(!$m) {push @result,$n*$refc->[1];next}
 
 		$d[0][0]=0;
-		foreach my $i (1 .. $n) {$d[$i][0]=_weight($i,'-',$refc)}
-		foreach my $j (1 .. $m) {$d[0][$j]=_weight('-',$j,$refc)}
+
+		# original algorithm should be:
+		# foreach my $i (1 .. $n) {
+		#
+		#	my $dist_tmp=0;
+		#	foreach my $k (1 .. $i) {$dist_tmp+=_weight(substr($s,$i,1),'-',$refc)}
+		#	$d[$i][0]=$dist_tmp;
+		# }
+		#
+		# foreach my $j (1 .. $m) {
+		#
+		#	my $dist_tmp=0;
+		#	foreach my $k (1 .. $j) {$dist_tmp+=_weight('-',substr($t,$j,1),$refc)}
+		#	$d[0][$j]=$dist_tmp;
+		# }
+		# that is:
+
+		foreach my $i (1 .. $n) {$d[$i][0]=$i*$refc->[1];}
+		foreach my $j (1 .. $m) {$d[0][$j]=$j*$refc->[1];}
 
 		foreach my $i (1 .. $n) {
 			my $s_i=substr($s,$i-1,1);
@@ -126,21 +143,20 @@ Text::WagnerFischer - An implementation of the Wagner-Fischer edit distance
 =head1 SYNOPSIS
 
 
+ use Text::WagnerFischer qw(distance);
 
-    use Text::WagnerFischer qw(distance);
+ print distance("foo","four");# prints "2"
 
-    print distance("foo","four");# prints "2"
-
-    print distance([0,1,2],"foo","four");# prints "3"
+ print distance([0,1,2],"foo","four");# prints "3"
 
 
-    my @words=("four","foo","bar");
+ my @words=("four","foo","bar");
 
-    my @distances=distance("foo",@words); 
-    print "@distances"; # prints "2 0 3"
+ my @distances=distance("foo",@words); 
+ print "@distances"; # prints "2 0 3"
 
-    @distances=distance([0,2,1],"foo",@words); 
-    print "@distances"; # prints "3 0 3"
+ @distances=distance([0,2,1],"foo",@words); 
+ print "@distances"; # prints "3 0 3"
 
  
 
@@ -169,7 +185,8 @@ case of the Levenshtein edit distance:
 This particular distance is the exact number of edit needed to transform 
 the string into the other one (and vice versa).
 When two strings have distance 0, they are the same.
-
+Note that the distance is calcolated to reach the _minimum_ cost, i.e.
+choosing the most economic operation for each edit.
 
 =head1 AUTHOR
 
@@ -178,6 +195,12 @@ Copyright 2002 Dree Mistrut <F<dree@friul.it>>
 This package is free software and is provided "as is" without express
 or implied warranty. You can redistribute it and/or modify it under 
 the same terms as Perl itself.
+
+
+=head1 SEE ALSO
+
+C<Text::Levenshtein>, C<Text::PhraseDistance>
+
 
 =cut
 

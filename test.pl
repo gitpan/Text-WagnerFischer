@@ -15,5 +15,5 @@ my @words=("four","foo","bar");
 my @distances=distance("foo",@words);
 print "Distances in array (default costs): [@distances] should be [2 0 3]\n";
 
-@distances=distance([0,2,1],"foo",@words);
-print "Distances in array (custom costs): [@distances] should be [3 0 3]\n";
+@distances=distance([0,5,3],"foo",@words);
+print "Distances in array (custom costs): [@distances] should be [8 0 9]\n";
