@@ -4,7 +4,7 @@ use strict;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $REFC);
 
-$VERSION     = '0.03';
+$VERSION     = '0.04';
 @ISA         = qw(Exporter);
 @EXPORT      = ();
 @EXPORT_OK   = qw(&distance);
@@ -171,7 +171,7 @@ A cost (weight) is needed for every of the operation defined above:
  w(x,y) =  |  b if x=- or y=- (cost for insertion/deletion operation)
 	    \ c if x!=y (cost for letter mismatch)
 
-These costs are given trough an array reference as first argument of the 
+These costs are given through an array reference as first argument of the 
 distance subroutine: [a,b,c].
 If the costs are not given, a default array cost is used: [0,1,1] that is the
 case of the Levenshtein edit distance:

@@ -1,6 +1,13 @@
 Change file for Text::WagnerFischer
 Dree Mistrut <dree@friul.it>
 
+Version 0.0.4 : 2003/04/13
+
+   Fixed a typo in the doc
+   Modified Makefile.PL
+   (Thanks to Daniel Yacob for both)
+
+
 Version 0.0.3 : 2003/04/12
 
    Changed $REFC scope to permit default cost redefinition
