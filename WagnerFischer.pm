@@ -2,14 +2,15 @@ package Text::WagnerFischer;
 
 use strict;
 use Exporter;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
+use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $REFC);
 
-$VERSION     = '0.02';
+$VERSION     = '0.03';
 @ISA         = qw(Exporter);
 @EXPORT      = ();
 @EXPORT_OK   = qw(&distance);
 %EXPORT_TAGS = ();
 
+$REFC=[0,1,1];
 
 sub _min {
 
@@ -56,7 +57,7 @@ sub distance {
 
 				$t[0]=$s;
 				$s=$refc;
-				$refc=[0,1,1];
+				$refc=$REFC;
 
 			} else {
 
@@ -70,16 +71,13 @@ sub distance {
        	      		Carp::croak("Text::WagnerFischer: second string is needed");
 		}
 
-	} else {
+	} elsif (ref($refc) ne "ARRAY") {
 
-		if (ref($refc) ne "ARRAY") {
+		#array cost missing: using default [0,1,1]
 
-			#array cost missing: using default [0,1,1]
-
-			unshift @t,$s;
-			$s=$refc;
-			$refc=[0,1,1];
-		}
+		unshift @t,$s;
+		$s=$refc;
+		$refc=$REFC;
 	}
 
 	my $n=length($s);
@@ -185,12 +183,53 @@ case of the Levenshtein edit distance:
 This particular distance is the exact number of edit needed to transform 
 the string into the other one (and vice versa).
 When two strings have distance 0, they are the same.
-Note that the distance is calcolated to reach the _minimum_ cost, i.e.
+Note that the distance is calculated to reach the _minimum_ cost, i.e.
 choosing the most economic operation for each edit.
+ 
+
+=head1 EXTENDING (by Daniel Yacob)
+
+New modules may build upon Text::WagnerFischer as a base class.
+This is practical when you would like to apply the algorithm
+to non-Roman character sets or would like to change some part
+of the algorithm but not another.
+
+The following example demonstrates how to use the WagnerFisher
+distance algorithm but apply your own weight function in a new
+package:
+
+  package Text::WagnerFischer::MyModule;
+  use base qw( Text::WagnerFischer );
+
+  #
+  # Link to the WagnerFisher "distance" function so that the
+  # new module may also export it:
+  #
+  use vars qw(@EXPORT_OK);
+
+  @EXPORT_OK = qw(&distance);
+
+  *distance = \&Text::WagnerFischer::distance;
+
+  #
+  # "override" the _weight function with the a one:
+  #
+  *Text::WagnerFischer::_weight = \&_my_weight;
+
+  #
+  # "override" the default WagnerFischer "costs" table:
+  #
+  $Text::WagnerFischer::REFC = [0,2,3,1,1];
+
+  sub _my_weight {
+    :
+    :
+    :
+  }
 
 =head1 AUTHOR
 
-Copyright 2002 Dree Mistrut <F<dree@friul.it>>
+Copyright 2002,2003 Dree Mistrut <F<dree@friul.it>>
 
 This package is free software and is provided "as is" without express
 or implied warranty. You can redistribute it and/or modify it under 

@@ -1,6 +1,14 @@
 Change file for Text::WagnerFischer
 Dree Mistrut <dree@friul.it>
 
+Version 0.0.3 : 2003/04/12
+
+   Changed $REFC scope to permit default cost redefinition
+   Added the "EXTENDING" section in the documentation
+   (Thanks to Daniel Yacob for both)
+   Modified test suite
+
+
 Version 0.0.2 : 2002/08/16
 
    Fixed matrix initialization (thanks to H. Zha to point me this)

@@ -21,7 +21,7 @@ You install Text::WagnerFischer by running these commands in the *nix environmen
 To install Text::WagnerFischer in the Win32 environment, use nmake instead of make.
 nmake is available for free (in a self extracting executable):
 <http://download.microsoft.com/download/vc15/Patch/1.52/W95/EN-US/Nmake15.exe>
-After download and inflate, put nmake.exe and nmake.err in c:\windows\command .
+After download and inflate, put nmake.exe and nmake.err somewhere in your path.
 
 
 DOCUMENTATION
@@ -40,7 +40,7 @@ CPAN <http://search.cpan.org/>
 
 COPYRIGHT
 
-Copyright 2002 Dree Mistrut <dree@friul.it>
+Copyright 2002,2003 Dree Mistrut <dree@friul.it>
 
 This package is free software and is provided "as is" without express
 or implied warranty.  You can redistribute it and/or modify it under 

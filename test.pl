@@ -1,19 +1,73 @@
 use strict;
 use Text::WagnerFischer qw(distance);
 
+my $ko=0;
+my $test=1;
 my $first_distance=distance("foo","four");
-print "First distance (default costs): ".$first_distance." should be 2\n";
+
+if ($first_distance == 2) {
+
+	print $test.". ok\n"
+
+} else {
+
+	print $test.". NO <--\n";
+	$ko=1;
+}
 
 my $second_distance=distance("foo","foo");
-print "Second distance (default costs): ".$second_distance." should be 0\n";
+$test++;
+
+if ($second_distance == 0) {
+
+	print $test.". ok\n"
+
+} else {
+
+	print $test.". NO <--\n";
+	$ko=1;
+}
 
 my $third_distance=distance([0,1,2],"foo","four");
-print "Third distance (custom costs): ".$third_distance." should be 3\n";
+$test++;
+
+if ($third_distance == 3) {
+
+	print $test.". ok\n"
+
+} else {
+
+	print $test.". NO <--\n";
+	$ko=1;
+}
 
 my @words=("four","foo","bar");
 
 my @distances=distance("foo",@words);
-print "Distances in array (default costs): [@distances] should be [2 0 3]\n";
+$test++;
+
+if (($distances[0] == 2) and ($distances[1] == 0) and ($distances[2] == 3)) {
+
+	print $test.". ok\n"
+
+} else {
+
+	print $test.". NO <--\n";
+	$ko=1;
+}
 
 @distances=distance([0,5,3],"foo",@words);
-print "Distances in array (custom costs): [@distances] should be [8 0 9]\n";
+$test++;
+
+if (($distances[0] == 8) and ($distances[1] == 0) and ($distances[2] == 9)) {
+
+	print $test.". ok\n"
+
+} else {
+
+	print $test.". NO <--\n";
+	$ko=1;
+}
+
+
+if ($ko) {print "\nTest suite failed\n"} else {print "\nTest suite ok\n"}
