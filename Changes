@@ -1,6 +1,13 @@
 Change file for Text::WagnerFischer
 Dree Mistrut <dree@friul.it>
 
+Version 0.0.5 : 2005/12/01 
+	
+	Maintainer of the code is Davide Bergamini.
+	It will look deeper to see any improvement
+	and to test code.
+
+
 Version 0.0.4 : 2003/04/13
 
    Fixed a typo in the doc
